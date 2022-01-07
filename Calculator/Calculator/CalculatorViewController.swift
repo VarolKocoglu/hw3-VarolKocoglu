@@ -31,6 +31,7 @@ class CalculatorViewController: UIViewController {
         }
     }
 
+    //When user clicks digits this function triggers
     @IBAction func digitButtonTapped(_ sender: UIButton) {
         if userIsTyping {
             var resultText = String(Int(result))
@@ -38,15 +39,23 @@ class CalculatorViewController: UIViewController {
             result = NSString(string: resultText).doubleValue
         } else {
             result = Double(sender.tag)
-            userIsTyping.toggle()
         }
+            userIsTyping = true
     }
 
+    //When user clicks operation button this function triggers
     @IBAction func operationButtonTapped(_ sender: UIButton) {
-        userIsTyping = false
-        brain.setOperand(result)
-        brain.performOperation(sender.titleLabel?.text ?? "")
+        if userIsTyping {
+            brain.setOperand(result)
+            userIsTyping = false
+        }
+        if let symbol = sender.titleLabel?.text {
+            brain.performOperation(symbol)
+            result = 0
+        }
         result = brain.result
+        //brain.performOperation(sender.titleLabel?.text ?? "")
+
     }
 }
 
